@@ -3,324 +3,141 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Free Web To APK Generator</title>
+    <title>Real Web To APK Generator</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        body {
-            background-color: #0b0f19;
-            color: #ffffff;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            padding: 15px;
-        }
-        .container {
-            width: 100%;
-            max-width: 450px;
-            background: #131b2e;
-            padding: 22px;
-            border-radius: 16px;
-            box-shadow: 0 8px 32px rgba(0, 255, 200, 0.15);
-            border: 1px solid #1f293d;
-        }
-        h2 {
-            text-align: center;
-            margin-bottom: 15px;
-            color: #00ffc8;
-            font-size: 22px;
-            text-shadow: 0 0 10px rgba(0, 255, 200, 0.3);
-        }
-        .step-indicator {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 18px;
-            font-size: 13px;
-            color: #64748b;
-            font-weight: bold;
-        }
-        .step-indicator span.active {
-            color: #00ffc8;
-        }
-        .step-content {
-            display: none;
-        }
-        .step-content.active {
-            display: block;
-        }
-        
-        /* Tab Selection for Source Type */
-        .source-tabs {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 6px;
-            margin-bottom: 15px;
-        }
-        .tab-btn {
-            background: #0b0f19;
-            border: 1px solid #2d3748;
-            color: #94a3b8;
-            padding: 8px 4px;
-            font-size: 11px;
-            border-radius: 6px;
-            cursor: pointer;
-            text-align: center;
-            font-weight: bold;
-            transition: 0.3s;
-        }
-        .tab-btn.active {
-            background: #00ffc8;
-            color: #0b0f19;
-            border-color: #00ffc8;
-            box-shadow: 0 0 8px rgba(0, 255, 200, 0.4);
-        }
-
-        .form-group {
-            margin-bottom: 14px;
-        }
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-size: 13px;
-            color: #94a3b8;
-        }
-        input, select, textarea {
-            width: 100%;
-            padding: 11px;
-            background: #0b0f19;
-            border: 1px solid #2d3748;
-            border-radius: 8px;
-            color: #fff;
-            font-size: 14px;
-            outline: none;
-            transition: 0.3s;
-        }
-        textarea {
-            resize: vertical;
-            height: 90px;
-            font-family: monospace;
-        }
-        input:focus, select:focus, textarea:focus {
-            border-color: #00ffc8;
-            box-shadow: 0 0 8px rgba(0, 255, 200, 0.3);
-        }
-        input[type="file"] {
-            padding: 8px;
-            font-size: 12px;
-            color: #94a3b8;
-        }
-        .btn-group {
-            display: flex;
-            gap: 10px;
-            margin-top: 15px;
-        }
-        .btn {
-            flex: 1;
-            padding: 12px;
-            background: linear-gradient(135deg, #00ffc8, #00b4d8);
-            border: none;
-            border-radius: 8px;
-            color: #0b0f19;
-            font-size: 15px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.3s;
-            box-shadow: 0 0 12px rgba(0, 255, 200, 0.3);
-        }
-        .btn-secondary {
-            background: #1f293d;
-            color: #fff;
-            box-shadow: none;
-        }
-        .btn:active {
-            transform: scale(0.98);
-        }
-        /* Ads Banner Space */
-        .ad-space {
-            width: 100%;
-            height: 55px;
-            background: #1a233a;
-            border: 1px dashed #334155;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #64748b;
-            font-size: 11px;
-            margin-bottom: 15px;
-            border-radius: 6px;
-        }
-        .source-field {
-            display: none;
-        }
-        .source-field.active {
-            display: block;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        body { background-color: #0b0f19; color: #ffffff; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; padding: 15px; }
+        .container { width: 100%; max-width: 450px; background: #131b2e; padding: 22px; border-radius: 16px; box-shadow: 0 8px 32px rgba(0, 255, 200, 0.15); border: 1px solid #1f293d; }
+        h2 { text-align: center; margin-bottom: 15px; color: #00ffc8; font-size: 22px; text-shadow: 0 0 10px rgba(0, 255, 200, 0.3); }
+        .step-indicator { display: flex; justify-content: space-between; margin-bottom: 18px; font-size: 13px; color: #64748b; font-weight: bold; }
+        .step-indicator span.active { color: #00ffc8; }
+        .step-content { display: none; }
+        .step-content.active { display: block; }
+        .source-tabs { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; margin-bottom: 15px; }
+        .tab-btn { background: #0b0f19; border: 1px solid #2d3748; color: #94a3b8; padding: 10px; font-size: 12px; border-radius: 6px; cursor: pointer; text-align: center; font-weight: bold; transition: 0.3s; }
+        .tab-btn.active { background: #00ffc8; color: #0b0f19; border-color: #00ffc8; box-shadow: 0 0 8px rgba(0, 255, 200, 0.4); }
+        .form-group { margin-bottom: 14px; }
+        label { display: block; margin-bottom: 5px; font-size: 13px; color: #94a3b8; }
+        input, textarea { width: 100%; padding: 11px; background: #0b0f19; border: 1px solid #2d3748; border-radius: 8px; color: #fff; font-size: 14px; outline: none; }
+        textarea { resize: vertical; height: 90px; font-family: monospace; }
+        input:focus, textarea:focus { border-color: #00ffc8; box-shadow: 0 0 8px rgba(0, 255, 200, 0.3); }
+        .btn { width: 100%; padding: 12px; background: linear-gradient(135deg, #00ffc8, #00b4d8); border: none; border-radius: 8px; color: #0b0f19; font-size: 15px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+        .source-field { display: none; }
+        .source-field.active { display: block; }
+        #downloadBox { display: none; margin-top: 15px; padding: 15px; background: #0b0f19; border: 1px solid #00ffc8; border-radius: 8px; text-align: center; }
+        .dl-btn { display: inline-block; width: 100%; padding: 12px; background: #00ff87; color: #0b0f19; font-weight: bold; text-decoration: none; border-radius: 6px; margin-top: 10px; }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <!-- Ad Banner Space (Yahan baad mein apna AdSterra/Monetag ad code laga sakte hain) -->
-        <div class="ad-space" id="adBanner">
-            <span>Ad Banner Space (468x60)</span>
-        </div>
+        <h2>Real Web To APK Builder</h2>
 
         <div class="step-indicator">
-            <span id="ind-1" class="active">1. Source & App</span>
-            <span id="ind-2">2. Icon & Config</span>
-            <span id="ind-3">3. Generate APK</span>
+            <span id="ind-1" class="active">1. Details</span>
+            <span id="ind-2">2. Build APK</span>
         </div>
 
-        <!-- STEP 1: App Details & Source Options -->
         <div id="step-1" class="step-content active">
-            <h2>Step 1: App Details</h2>
-            
             <div class="form-group">
                 <label>App Name</label>
-                <input type="text" id="appName" placeholder="e.g. My Custom App">
+                <input type="text" id="appName" placeholder="e.g. My Web App" required>
             </div>
 
-            <label>Select Source Type</label>
+            <label>Source Type</label>
             <div class="source-tabs">
-                <button type="button" class="tab-btn active" onclick="switchSource('url', this)">URL</button>
-                <button type="button" class="tab-btn" onclick="switchSource('zip', this)">ZIP File</button>
-                <button type="button" class="tab-btn" onclick="switchSource('htmlfile', this)">HTML File</button>
-                <button type="button" class="tab-btn" onclick="switchSource('htmlcode', this)">Paste HTML</button>
+                <button type="button" class="tab-btn active" onclick="switchSource('url', this)">Website URL</button>
+                <button type="button" class="tab-btn" onclick="switchSource('htmlcode', this)">HTML Code</button>
             </div>
 
-            <!-- Option 1: URL -->
             <div id="field-url" class="form-group source-field active">
                 <label>Website URL</label>
-                <input type="url" id="appUrl" placeholder="https://yourwebsite.com">
+                <input type="url" id="appUrl" placeholder="https://example.com">
             </div>
 
-            <!-- Option 2: ZIP File -->
-            <div id="field-zip" class="form-group source-field">
-                <label>Upload Web ZIP Package (.zip)</label>
-                <input type="file" id="appZip" accept=".zip">
-            </div>
-
-            <!-- Option 3: HTML File -->
-            <div id="field-htmlfile" class="form-group source-field">
-                <label>Upload HTML File (.html)</label>
-                <input type="file" id="appHtmlFile" accept=".html,.htm">
-            </div>
-
-            <!-- Option 4: Paste HTML Code -->
             <div id="field-htmlcode" class="form-group source-field">
-                <label>Paste Custom HTML Code</label>
-                <textarea id="appHtmlCode" placeholder="<html><body><h1>Hello World</h1></body></html>"></textarea>
+                <label>HTML Code</label>
+                <textarea id="appHtmlCode" placeholder="<h1>Hello World</h1>"></textarea>
             </div>
 
-            <div class="form-group">
-                <label>Package Name (Bundle ID)</label>
-                <input type="text" id="pkgName" placeholder="com.myapp.app">
-            </div>
-
-            <button type="button" class="btn" onclick="nextStep(2)">Next: Settings ➡️</button>
+            <button type="button" class="btn" onclick="nextStep(2)">Next: Generate APK ➡️</button>
         </div>
 
-        <!-- STEP 2: Icon & Config -->
         <div id="step-2" class="step-content">
-            <h2>Step 2: Icon & Settings</h2>
-            <div class="form-group">
-                <label>Upload App Icon (PNG/JPG)</label>
-                <input type="file" id="appIcon" accept="image/*">
-            </div>
-            <div class="form-group">
-                <label>Orientation</label>
-                <select id="orientation">
-                    <option value="portrait">Portrait Only</option>
-                    <option value="landscape">Landscape Only</option>
-                    <option value="sensor">Sensor (Auto Rotate)</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>Status Bar Color</label>
-                <input type="color" id="statusBarColor" value="#0b0f19" style="height: 40px; cursor: pointer;">
-            </div>
-            <div class="btn-group">
-                <button type="button" class="btn btn-secondary" onclick="nextStep(1)">⬅️ Back</button>
-                <button type="button" class="btn" onclick="nextStep(3)">Next: Build 🚀</button>
-            </div>
-        </div>
-
-        <!-- STEP 3: Final Generation -->
-        <div id="step-3" class="step-content">
-            <h2>Step 3: Build APK</h2>
-            <p style="font-size: 13px; color: #94a3b8; text-align: center; margin-bottom: 15px;">
-                Sabhi configuration ready hain. Build par click karein!
+            <h2>Build Real APK</h2>
+            <p style="font-size: 12px; color: #94a3b8; text-align: center; margin-bottom: 15px;">
+                Build button par click karte hi aapki Android APK generate hona shuru ho jayegi.
             </p>
-            <div class="form-group" style="background: #0b0f19; padding: 12px; border-radius: 8px; font-size: 12px; border: 1px solid #1f293d;">
-                <p><strong>App Name:</strong> <span id="summaryName">-</span></p>
-                <p><strong>Source Type:</strong> <span id="summarySource">-</span></p>
-                <p><strong>Package Name:</strong> <span id="summaryPkg">-</span></p>
-            </div>
-            <div class="btn-group">
-                <button type="button" class="btn btn-secondary" onclick="nextStep(2)">⬅️ Edit</button>
-                <button type="button" class="btn" onclick="buildApp()" style="background: linear-gradient(135deg, #00ff87, #60efff);">Build APK Now ⚙️</button>
+
+            <button type="button" id="buildBtn" class="btn" onclick="startRealBuild()">Build Real APK Now ⚙️</button>
+
+            <div id="downloadBox">
+                <p style="color: #00ffc8; font-weight: bold;">🎉 Real APK Ready!</p>
+                <a href="#" id="realApkLink" class="dl-btn" download>Download APK File 📥</a>
             </div>
         </div>
-
     </div>
 
     <script>
-        let currentSourceType = 'Website URL';
+        let currentSourceType = 'url';
 
         function switchSource(type, btn) {
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
             document.querySelectorAll('.source-field').forEach(f => f.classList.remove('active'));
-
             btn.classList.add('active');
             document.getElementById(`field-${type}`).classList.add('active');
-            
-            if(type === 'url') currentSourceType = 'Website URL';
-            if(type === 'zip') currentSourceType = 'ZIP File Package';
-            if(type === 'htmlfile') currentSourceType = 'HTML Uploaded File';
-            if(type === 'htmlcode') currentSourceType = 'Pasted Custom HTML';
+            currentSourceType = type;
         }
 
         function nextStep(step) {
-            if(step === 2) {
-                const name = document.getElementById('appName').value;
-                if(!name) {
-                    alert('Kripya App Name zaroor daalein!');
-                    return;
-                }
+            if(!document.getElementById('appName').value) {
+                alert('App Name daalna zaroori hai!');
+                return;
             }
-            if(step === 3) {
-                document.getElementById('summaryName').innerText = document.getElementById('appName').value;
-                document.getElementById('summarySource').innerText = currentSourceType;
-                document.getElementById('summaryPkg').innerText = document.getElementById('pkgName').value || 'com.default.app';
-            }
-
             document.querySelectorAll('.step-content').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.step-indicator span').forEach(el => el.classList.remove('active'));
-
             document.getElementById(`step-${step}`).classList.add('active');
-            document.getElementById(`ind-${step}`).classList.add('active');
         }
 
-        function buildApp() {
-            const appName = document.getElementById('appName').value;
-            const btn = event.target;
-            
+        async function startRealBuild() {
+            const btn = document.getElementById('buildBtn');
+            const downloadBox = document.getElementById('downloadBox');
+            const realApkLink = document.getElementById('realApkLink');
+
+            const payload = {
+                appName: document.getElementById('appName').value,
+                sourceType: currentSourceType,
+                url: document.getElementById('appUrl').value,
+                html: document.getElementById('appHtmlCode').value
+            };
+
             btn.disabled = true;
-            btn.innerText = "Building APK... ⏳";
-            
-            setTimeout(() => {
+            btn.innerText = "Compiling Real APK (15-30 sec)... ⏳";
+            downloadBox.style.display = "none";
+
+            try {
+                // Connects to your Python Flask compiler API deployed on Render
+                const response = await fetch('https://your-compiler-backend.onrender.com/build-apk', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const result = await response.json();
+
+                if(result.status === "success") {
+                    realApkLink.href = result.downloadUrl;
+                    realApkLink.setAttribute('download', `${payload.appName.replace(/\s+/g, '_')}.apk`);
+                    downloadBox.style.display = "block";
+                    btn.innerText = "Re-Build APK ⚙️";
+                } else {
+                    alert("Build Failed: " + result.message);
+                }
+            } catch (err) {
+                alert("Backend Service connecting... (Make sure Render compiler API is active)");
+            } finally {
                 btn.disabled = false;
-                btn.innerText = "Build APK Now ⚙️";
-                alert(`Badhai ho! "${appName}" (${currentSourceType}) ke liye APK compilation complete ho gaya hai.\n\nDownload Link ready hai!`);
-            }, 3000);
+            }
         }
     </script>
-
 </body>
 </html>
