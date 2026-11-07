@@ -733,12 +733,37 @@
             document.getElementById('customAdFields').style.display = (net !== 'admob') ? 'block' : 'none';
         }
 
-        function startBuildProcess() {
+                async function startBuildProcess() {
             const name = document.getElementById('appName').value || 'MyWebApp';
-            const ver = document.getElementById('versionName').value || '1.0.0';
+            const url = document.getElementById('appUrl').value || 'https://google.com';
+            const verName = document.getElementById('versionName').value || '1.0.0';
+            const verCode = document.getElementById('versionCode').value || '1';
+            const pkg = document.getElementById('pkgName').value || 'com.app.webview';
+            const adNet = document.getElementById('adNetwork').value;
+
             goToStep(5);
-            document.getElementById('dlFileName').innerText = `${name.replace(/\s+/g, '_')}_v${ver}_release.apk`;
+            document.getElementById('dlFileName').innerText = `${name.replace(/\s+/g, '_')}_v${verName}_release.apk`;
+
+            try {
+                let response = await fetch('https://apk-generator-dhho.onrender.com/generate-apk', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        appName: name,
+                        appUrl: url,
+                        versionName: verName,
+                        versionCode: verCode,
+                        pkgName: pkg,
+                        adNetwork: adNet
+                    })
+                });
+                let result = await response.json();
+                console.log("Server Response:", result);
+            } catch (error) {
+                console.error("Build trigger error:", error);
+            }
         }
+
     </script>
 </body>
 </html>
