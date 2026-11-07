@@ -733,7 +733,7 @@
             document.getElementById('customAdFields').style.display = (net !== 'admob') ? 'block' : 'none';
         }
 
-                        async function startBuildProcess() {
+                                async function startBuildProcess() {
             const name = document.getElementById('appName').value || 'MyWebApp';
             const url = document.getElementById('appUrl').value || 'https://google.com';
             const verName = document.getElementById('versionName').value || '1.0.0';
@@ -746,7 +746,7 @@
             document.getElementById('dlFileName').innerText = `${safeName}_v${verName}.apk`;
 
             try {
-                let response = await fetch('https://apk-generator-dhho.onrender.com/generate-apk', {
+                let response = await fetch('https://apk-generator-0bbp.onrender.com/generate-apk', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -774,6 +774,7 @@
                 alert("Connection failed with build server.");
             }
         }
+
 
 
     </script>
