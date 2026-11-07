@@ -3,140 +3,731 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Real Web To APK Generator</title>
+    <title>FreeWebToApk - Professional Web to APK Builder</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
-        body { background-color: #0b0f19; color: #ffffff; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; padding: 15px; }
-        .container { width: 100%; max-width: 450px; background: #131b2e; padding: 22px; border-radius: 16px; box-shadow: 0 8px 32px rgba(0, 255, 200, 0.15); border: 1px solid #1f293d; }
-        h2 { text-align: center; margin-bottom: 15px; color: #00ffc8; font-size: 22px; text-shadow: 0 0 10px rgba(0, 255, 200, 0.3); }
-        .step-indicator { display: flex; justify-content: space-between; margin-bottom: 18px; font-size: 13px; color: #64748b; font-weight: bold; }
-        .step-indicator span.active { color: #00ffc8; }
-        .step-content { display: none; }
-        .step-content.active { display: block; }
-        .source-tabs { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; margin-bottom: 15px; }
-        .tab-btn { background: #0b0f19; border: 1px solid #2d3748; color: #94a3b8; padding: 10px; font-size: 12px; border-radius: 6px; cursor: pointer; text-align: center; font-weight: bold; transition: 0.3s; }
-        .tab-btn.active { background: #00ffc8; color: #0b0f19; border-color: #00ffc8; box-shadow: 0 0 8px rgba(0, 255, 200, 0.4); }
-        .form-group { margin-bottom: 14px; }
-        label { display: block; margin-bottom: 5px; font-size: 13px; color: #94a3b8; }
-        input, textarea { width: 100%; padding: 11px; background: #0b0f19; border: 1px solid #2d3748; border-radius: 8px; color: #fff; font-size: 14px; outline: none; }
-        textarea { resize: vertical; height: 90px; font-family: monospace; }
-        input:focus, textarea:focus { border-color: #00ffc8; box-shadow: 0 0 8px rgba(0, 255, 200, 0.3); }
-        .btn { width: 100%; padding: 12px; background: linear-gradient(135deg, #00ffc8, #00b4d8); border: none; border-radius: 8px; color: #0b0f19; font-size: 15px; font-weight: bold; cursor: pointer; margin-top: 10px; }
-        .source-field { display: none; }
-        .source-field.active { display: block; }
-        #downloadBox { display: none; margin-top: 15px; padding: 15px; background: #0b0f19; border: 1px solid #00ffc8; border-radius: 8px; text-align: center; }
-        .dl-btn { display: inline-block; width: 100%; padding: 12px; background: #00ff87; color: #0b0f19; font-weight: bold; text-decoration: none; border-radius: 6px; margin-top: 10px; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        body {
+            background-color: #0d0f12;
+            color: #e2e8f0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding: 15px;
+        }
+
+        .main-wrapper {
+            width: 100%;
+            max-width: 480px;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding: 5px 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 20px;
+            font-weight: 800;
+            color: #ffffff;
+        }
+
+        .logo span {
+            color: #a3e635;
+        }
+
+        .stepper-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #161a23;
+            padding: 12px 16px;
+            border-radius: 12px;
+            border: 1px solid #272f3f;
+            margin-bottom: 20px;
+        }
+
+        .step-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+            opacity: 0.5;
+            transition: 0.3s;
+        }
+
+        .step-item.active {
+            opacity: 1;
+        }
+
+        .step-num {
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            background: #272f3f;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        .step-item.active .step-num {
+            background: #a3e635;
+            color: #000;
+        }
+
+        .step-label {
+            font-size: 10px;
+            color: #94a3b8;
+            font-weight: 500;
+        }
+
+        .card-container {
+            background: #161a23;
+            border: 1px solid #272f3f;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .step-panel {
+            display: none;
+        }
+
+        .step-panel.active {
+            display: block;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 4px;
+        }
+
+        .section-desc {
+            font-size: 12px;
+            color: #94a3b8;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #94a3b8;
+            margin-bottom: 8px;
+        }
+
+        input[type="text"], input[type="url"], textarea, select {
+            width: 100%;
+            background: #0d0f12;
+            border: 1px solid #272f3f;
+            border-radius: 10px;
+            padding: 12px;
+            color: #fff;
+            font-size: 14px;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        input:focus, textarea:focus, select:focus {
+            border-color: #a3e635;
+        }
+
+        .hint-text {
+            font-size: 11px;
+            color: #64748b;
+            margin-top: 6px;
+        }
+
+        .source-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .source-btn {
+            background: #0d0f12;
+            border: 1px solid #272f3f;
+            color: #94a3b8;
+            padding: 12px 6px;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .source-btn.active {
+            background: #a3e635;
+            color: #000;
+            border-color: #a3e635;
+        }
+
+        .radio-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .radio-card {
+            background: #0d0f12;
+            border: 1px solid #272f3f;
+            border-radius: 10px;
+            padding: 14px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+        }
+
+        .radio-card.active {
+            border-color: #a3e635;
+        }
+
+        .radio-dot {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            border: 2px solid #64748b;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .radio-card.active .radio-dot {
+            border-color: #a3e635;
+            background: #a3e635;
+        }
+
+        .radio-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .radio-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .radio-sub {
+            font-size: 11px;
+            color: #64748b;
+        }
+
+        .toggle-box {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #0d0f12;
+            padding: 14px;
+            border-radius: 10px;
+            border: 1px solid #272f3f;
+            margin-bottom: 12px;
+        }
+
+        .toggle-switch {
+            width: 44px;
+            height: 24px;
+            background: #272f3f;
+            border-radius: 12px;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .toggle-switch.active {
+            background: #a3e635;
+        }
+
+        .toggle-knob {
+            width: 18px;
+            height: 18px;
+            background: #fff;
+            border-radius: 50%;
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            transition: 0.3s;
+        }
+
+        .toggle-switch.active .toggle-knob {
+            left: 23px;
+            background: #000;
+        }
+
+        .accordion {
+            background: #0d0f12;
+            border: 1px solid #272f3f;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            overflow: hidden;
+        }
+
+        .accordion-header {
+            padding: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            color: #e2e8f0;
+        }
+
+        .accordion-content {
+            display: none;
+            padding: 14px;
+            border-top: 1px solid #272f3f;
+            background: #11141b;
+        }
+
+        .accordion.open .accordion-content {
+            display: block;
+        }
+
+        .color-options {
+            display: flex;
+            gap: 10px;
+            margin-top: 8px;
+        }
+
+        .color-circle {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+
+        .color-circle.selected {
+            border-color: #fff;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .btn-action {
+            flex: 1;
+            padding: 14px;
+            border-radius: 10px;
+            border: none;
+            background: #a3e635;
+            color: #000;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        .btn-secondary {
+            background: #272f3f;
+            color: #fff;
+        }
+
+        .summary-card {
+            background: #0d0f12;
+            border: 1px dashed #272f3f;
+            border-radius: 10px;
+            padding: 16px;
+            margin-bottom: 20px;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            font-size: 13px;
+        }
+
+        .summary-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .summary-val {
+            color: #a3e635;
+            font-weight: 600;
+        }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <h2>Real Web To APK Builder</h2>
-
-        <div class="step-indicator">
-            <span id="ind-1" class="active">1. Details</span>
-            <span id="ind-2">2. Build APK</span>
+    <div class="main-wrapper">
+        <div class="header">
+            <div class="logo">🚀 FreeWebTo<span>Apk</span></div>
         </div>
 
-        <div id="step-1" class="step-content active">
-            <div class="form-group">
-                <label>App Name</label>
-                <input type="text" id="appName" placeholder="e.g. My Web App" required>
+        <div class="stepper-nav">
+            <div class="step-item active" id="stepNav1">
+                <div class="step-num">1</div>
+                <div class="step-label">Basic</div>
             </div>
-
-            <label>Source Type</label>
-            <div class="source-tabs">
-                <button type="button" class="tab-btn active" onclick="switchSource('url', this)">Website URL</button>
-                <button type="button" class="tab-btn" onclick="switchSource('htmlcode', this)">HTML Code</button>
+            <div class="step-item" id="stepNav2">
+                <div class="step-num">2</div>
+                <div class="step-label">Icon</div>
             </div>
-
-            <div id="field-url" class="form-group source-field active">
-                <label>Website URL</label>
-                <input type="url" id="appUrl" placeholder="https://example.com">
+            <div class="step-item" id="stepNav3">
+                <div class="step-num">3</div>
+                <div class="step-label">Settings</div>
             </div>
-
-            <div id="field-htmlcode" class="form-group source-field">
-                <label>HTML Code</label>
-                <textarea id="appHtmlCode" placeholder="<h1>Hello World</h1>"></textarea>
+            <div class="step-item" id="stepNav4">
+                <div class="step-num">4</div>
+                <div class="step-label">Review</div>
             </div>
-
-            <button type="button" class="btn" onclick="nextStep(2)">Next: Generate APK ➡️</button>
+            <div class="step-item" id="stepNav5">
+                <div class="step-num">5</div>
+                <div class="step-label">Download</div>
+            </div>
         </div>
 
-        <div id="step-2" class="step-content">
-            <h2>Build Real APK</h2>
-            <p style="font-size: 12px; color: #94a3b8; text-align: center; margin-bottom: 15px;">
-                Build button par click karte hi aapki Android APK generate hona shuru ho jayegi.
-            </p>
+        <div class="card-container">
 
-            <button type="button" id="buildBtn" class="btn" onclick="startRealBuild()">Build Real APK Now ⚙️</button>
+            <!-- STEP 1 -->
+            <div class="step-panel active" id="stepPanel1">
+                <h2 class="section-title">Basic Information</h2>
+                <p class="section-desc">Name your app, then choose what it shows: a website, your own HTML, or a ZIP of your site</p>
 
-            <div id="downloadBox">
-                <p style="color: #00ffc8; font-weight: bold;">🎉 Real APK Ready!</p>
-                <a href="#" id="realApkLink" class="dl-btn" download>Download APK File 📥</a>
+                <div class="form-group">
+                    <label>App Name *</label>
+                    <input type="text" id="appName" placeholder="My Awesome App">
+                    <div class="hint-text">This will appear on user's home screen (max 30 characters)</div>
+                </div>
+
+                <label>What Should The App Show? *</label>
+                <div class="source-grid">
+                    <div class="source-btn active" onclick="setSource('url', this)">Website URL</div>
+                    <div class="source-btn" onclick="setSource('html', this)">Paste HTML</div>
+                    <div class="source-btn" onclick="setSource('file', this)">HTML File</div>
+                    <div class="source-btn" onclick="setSource('zip', this)">ZIP</div>
+                    <div class="source-btn" onclick="setSource('dev', this)">Live Dev</div>
+                </div>
+
+                <div class="form-group" id="inputUrlGroup">
+                    <label>Website URL *</label>
+                    <input type="url" id="appUrl" placeholder="https://yourwebsite.com">
+                </div>
+
+                <div class="form-group" id="inputHtmlGroup" style="display: none;">
+                    <label>Paste Custom HTML Code *</label>
+                    <textarea id="appHtml" placeholder="<html><body><h1>Hello World</h1></body></html>"></textarea>
+                </div>
+
+                <div class="form-group" id="inputFileGroup" style="display: none;">
+                    <label>Upload Web File *</label>
+                    <input type="file" id="appFile">
+                </div>
+
+                <button class="btn-action" style="width: 100%;" onclick="goToStep(2)">Next: App Icon ➡️</button>
             </div>
+
+            <!-- STEP 2 -->
+            <div class="step-panel" id="stepPanel2">
+                <h2 class="section-title">App Icon</h2>
+                <p class="section-desc">Upload your own icon or generate one with custom colors</p>
+
+                <div class="radio-grid">
+                    <div class="radio-card active" onclick="setIconType('upload', this)">
+                        <div class="radio-dot"></div>
+                        <div class="radio-info">
+                            <span class="radio-title">Upload Icon</span>
+                            <span class="radio-sub">Upload your own PNG icon (512x512 recommended)</span>
+                        </div>
+                    </div>
+                    <div class="radio-card" onclick="setIconType('generate', this)">
+                        <div class="radio-dot"></div>
+                        <div class="radio-info">
+                            <span class="radio-title">Generate Icon</span>
+                            <span class="radio-sub">Create a simple text-based Icon</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="iconUploadSection" class="form-group">
+                    <label>Upload PNG File</label>
+                    <input type="file" id="iconFile" accept="image/png">
+                </div>
+
+                <div id="iconGenSection" style="display: none;">
+                    <div class="form-group">
+                        <label>Icon Text (1-2 Characters)</label>
+                        <input type="text" id="iconText" maxlength="2" value="AB">
+                    </div>
+                    <div class="form-group">
+                        <label>Background Color</label>
+                        <div class="color-options">
+                            <div class="color-circle selected" style="background: #a3e635;" onclick="selectColor(this)"></div>
+                            <div class="color-circle" style="background: #a855f7;" onclick="selectColor(this)"></div>
+                            <div class="color-circle" style="background: #ef4444;" onclick="selectColor(this)"></div>
+                            <div class="color-circle" style="background: #10b981;" onclick="selectColor(this)"></div>
+                            <div class="color-circle" style="background: #3b82f6;" onclick="selectColor(this)"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn-action btn-secondary" onclick="goToStep(1)">Back</button>
+                    <button class="btn-action" onclick="goToStep(3)">Next: Settings ➡️</button>
+                </div>
+            </div>
+
+            <!-- STEP 3 -->
+            <div class="step-panel" id="stepPanel3">
+                <h2 class="section-title">App Settings</h2>
+                <p class="section-desc">Configure your app's behavior and features</p>
+
+                <label>Screen Mode</label>
+                <div class="radio-grid">
+                    <div class="radio-card active" onclick="selectRadio(this)">
+                        <div class="radio-dot"></div>
+                        <span class="radio-title">Fullscreen</span>
+                    </div>
+                    <div class="radio-card" onclick="selectRadio(this)">
+                        <div class="radio-dot"></div>
+                        <span class="radio-title">Normal (with status bar)</span>
+                    </div>
+                </div>
+
+                <label>Orientation</label>
+                <div class="radio-grid">
+                    <div class="radio-card active" onclick="selectRadio(this)">
+                        <div class="radio-dot"></div>
+                        <span class="radio-title">Auto-rotate</span>
+                    </div>
+                    <div class="radio-card" onclick="selectRadio(this)">
+                        <div class="radio-dot"></div>
+                        <span class="radio-title">Portrait only</span>
+                    </div>
+                </div>
+
+                <div class="toggle-box">
+                    <span>Pull to Refresh</span>
+                    <div class="toggle-switch active" onclick="toggleSwitch(this)"><div class="toggle-knob"></div></div>
+                </div>
+
+                <div class="toggle-box">
+                    <span>Show Exit Confirmation</span>
+                    <div class="toggle-switch active" onclick="toggleSwitch(this)"><div class="toggle-knob"></div></div>
+                </div>
+
+                <h3 style="font-size: 14px; margin: 20px 0 10px; color: #a3e635;">Advanced Options (All Free!)</h3>
+
+                <!-- Monetization Accordion -->
+                <div class="accordion">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span>Monetization (AdMob / Adsterra / Monetag)</span>
+                        <span>▼</span>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="form-group">
+                            <label>Select Ad Network</label>
+                            <select id="adNetwork" onchange="switchAdNetwork(this.value)">
+                                <option value="admob">Google AdMob</option>
+                                <option value="adsterra">Adsterra</option>
+                                <option value="monetag">Monetag</option>
+                            </select>
+                        </div>
+
+                        <div id="admobFields">
+                            <div class="form-group">
+                                <label>ADMOB APP ID *</label>
+                                <input type="text" placeholder="ca-app-pub-XXXXXXXXXXXXXXXX~XXXXXXXXXX">
+                            </div>
+                            <div class="form-group">
+                                <label>ADMOB PUBLISHER ID *</label>
+                                <input type="text" placeholder="pub-XXXXXXXXXXXXXXXX">
+                            </div>
+                        </div>
+
+                        <div id="customAdFields" style="display: none;">
+                            <div class="form-group">
+                                <label>ZONE ID / AD BANNER SCRIPT CODE *</label>
+                                <textarea placeholder="Paste your Adsterra or Monetag Zone ID / Ad Code here..."></textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>DEVELOPER WEBSITE (FOR APP-ADS.TXT)</label>
+                            <input type="url" placeholder="https://yourwebsite.com">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Package & Play Store -->
+                <div class="accordion">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span>Package & Play Store Details</span>
+                        <span>▼</span>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="form-group">
+                            <label>Package Name (Bundle ID)</label>
+                            <input type="text" id="pkgName" placeholder="com.company.appname">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Push Notifications -->
+                <div class="accordion">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <span>Push Notifications</span>
+                        <span>▼</span>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="form-group">
+                            <label>OneSignal App ID</label>
+                            <input type="text" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn-action btn-secondary" onclick="goToStep(2)">Back</button>
+                    <button class="btn-action" onclick="goToStep(4)">Next: Summary ➡️</button>
+                </div>
+            </div>
+
+            <!-- STEP 4 -->
+            <div class="step-panel" id="stepPanel4">
+                <h2 class="section-title">App Summary</h2>
+                <p class="section-desc">Review your details before compiling your Android APK</p>
+
+                <div class="summary-card">
+                    <div class="summary-row">
+                        <span>APP NAME</span>
+                        <span class="summary-val" id="sumAppName">My App</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>SOURCE</span>
+                        <span class="summary-val" id="sumSource">Website URL</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>VERSION</span>
+                        <span class="summary-val">1.0.0</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>SCREEN MODE</span>
+                        <span class="summary-val">Fullscreen</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>MONETIZATION</span>
+                        <span class="summary-val" id="sumAd">User Ads Enabled</span>
+                    </div>
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn-action btn-secondary" onclick="goToStep(3)">Edit</button>
+                    <button class="btn-action" onclick="startBuildProcess()">Generate Free APK + AAB 🚀</button>
+                </div>
+            </div>
+
+            <!-- STEP 5 -->
+            <div class="step-panel" id="stepPanel5">
+                <h2 class="section-title" style="text-align: center;">🎉 Build Complete!</h2>
+                <p class="section-desc" style="text-align: center;">Your Android App is compiled and ready for download.</p>
+
+                <div class="summary-card" style="text-align: center;">
+                    <p style="font-size: 13px; color: #94a3b8; margin-bottom: 10px;">Generated File</p>
+                    <h3 id="dlFileName" style="color: #a3e635; margin-bottom: 15px;">app-release.apk</h3>
+                    <a href="#" id="finalDownloadBtn" class="btn-action" download style="display: block;">Download APK File 📥</a>
+                </div>
+
+                <button class="btn-action btn-secondary" style="width: 100%; margin-top: 10px;" onclick="goToStep(1)">Create Another App 🔄</button>
+            </div>
+
         </div>
     </div>
 
     <script>
-        let currentSourceType = 'url';
-
-        function switchSource(type, btn) {
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-            document.querySelectorAll('.source-field').forEach(f => f.classList.remove('active'));
-            btn.classList.add('active');
-            document.getElementById(`field-${type}`).classList.add('active');
-            currentSourceType = type;
-        }
-
-        function nextStep(step) {
-            if(!document.getElementById('appName').value) {
-                alert('App Name daalna zaroori hai!');
+        function goToStep(stepNum) {
+            if(stepNum === 2 && !document.getElementById('appName').value) {
+                alert('Please enter App Name!');
                 return;
             }
-            document.querySelectorAll('.step-content').forEach(el => el.classList.remove('active'));
-            document.getElementById(`step-${step}`).classList.add('active');
+
+            if(stepNum === 4) {
+                document.getElementById('sumAppName').innerText = document.getElementById('appName').value;
+            }
+
+            document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.step-item').forEach(s => s.classList.remove('active'));
+
+            document.getElementById(`stepPanel${stepNum}`).classList.add('active');
+            document.getElementById(`stepNav${stepNum}`).classList.add('active');
         }
 
-        async function startRealBuild() {
-            const btn = document.getElementById('buildBtn');
-            const downloadBox = document.getElementById('downloadBox');
-            const realApkLink = document.getElementById('realApkLink');
+        function setSource(type, btn) {
+            document.querySelectorAll('.source-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
 
-            const payload = {
-                appName: document.getElementById('appName').value,
-                sourceType: currentSourceType,
-                url: document.getElementById('appUrl').value,
-                html: document.getElementById('appHtmlCode').value
-            };
+            document.getElementById('inputUrlGroup').style.display = (type === 'url') ? 'block' : 'none';
+            document.getElementById('inputHtmlGroup').style.display = (type === 'html') ? 'block' : 'none';
+            document.getElementById('inputFileGroup').style.display = (type === 'file' || type === 'zip') ? 'block' : 'none';
+        }
 
-            btn.disabled = true;
-            btn.innerText = "Compiling Real APK (15-30 sec)... ⏳";
-            downloadBox.style.display = "none";
+        function setIconType(type, card) {
+            document.querySelectorAll('#stepPanel2 .radio-card').forEach(c => c.classList.remove('active'));
+            card.classList.add('active');
 
-            try {
-                // Connects to your Python Flask compiler API deployed on Render
-                const response = await fetch('https://your-compiler-backend.onrender.com/build-apk', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
+            document.getElementById('iconUploadSection').style.display = (type === 'upload') ? 'block' : 'none';
+            document.getElementById('iconGenSection').style.display = (type === 'generate') ? 'block' : 'none';
+        }
 
-                const result = await response.json();
+        function selectRadio(card) {
+            const parent = card.parentElement;
+            parent.querySelectorAll('.radio-card').forEach(c => c.classList.remove('active'));
+            card.classList.add('active');
+        }
 
-                if(result.status === "success") {
-                    realApkLink.href = result.downloadUrl;
-                    realApkLink.setAttribute('download', `${payload.appName.replace(/\s+/g, '_')}.apk`);
-                    downloadBox.style.display = "block";
-                    btn.innerText = "Re-Build APK ⚙️";
-                } else {
-                    alert("Build Failed: " + result.message);
-                }
-            } catch (err) {
-                alert("Backend Service connecting... (Make sure Render compiler API is active)");
-            } finally {
-                btn.disabled = false;
-            }
+        function toggleSwitch(el) {
+            el.classList.toggle('active');
+        }
+
+        function toggleAccordion(header) {
+            header.parentElement.classList.toggle('open');
+        }
+
+        function selectColor(circle) {
+            document.querySelectorAll('.color-circle').forEach(c => c.classList.remove('selected'));
+            circle.classList.add('selected');
+        }
+
+        function switchAdNetwork(net) {
+            document.getElementById('admobFields').style.display = (net === 'admob') ? 'block' : 'none';
+            document.getElementById('customAdFields').style.display = (net !== 'admob') ? 'block' : 'none';
+        }
+
+        function startBuildProcess() {
+            const name = document.getElementById('appName').value || 'MyWebApp';
+            goToStep(5);
+            document.getElementById('dlFileName').innerText = `${name.replace(/\s+/g, '_')}_release.apk`;
         }
     </script>
 </body>
