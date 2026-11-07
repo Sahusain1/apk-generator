@@ -580,7 +580,7 @@
                     </div>
                 </div>
 
-                <!-- Package & Play Store -->
+                <!-- Package & Play Store with Version Control -->
                 <div class="accordion">
                     <div class="accordion-header" onclick="toggleAccordion(this)">
                         <span>Package & Play Store Details</span>
@@ -590,6 +590,14 @@
                         <div class="form-group">
                             <label>Package Name (Bundle ID)</label>
                             <input type="text" id="pkgName" placeholder="com.company.appname">
+                        </div>
+                        <div class="form-group">
+                            <label>Version Name (e.g. 1.0.0 or 1.1)</label>
+                            <input type="text" id="versionName" value="1.0.0" placeholder="1.0.0">
+                        </div>
+                        <div class="form-group">
+                            <label>Version Code (e.g. 1, 2, 3)</label>
+                            <input type="text" id="versionCode" value="1" placeholder="1">
                         </div>
                     </div>
                 </div>
@@ -630,7 +638,7 @@
                     </div>
                     <div class="summary-row">
                         <span>VERSION</span>
-                        <span class="summary-val">1.0.0</span>
+                        <span class="summary-val" id="sumVersion">1.0.0</span>
                     </div>
                     <div class="summary-row">
                         <span>SCREEN MODE</span>
@@ -674,6 +682,7 @@
 
             if(stepNum === 4) {
                 document.getElementById('sumAppName').innerText = document.getElementById('appName').value;
+                document.getElementById('sumVersion').innerText = document.getElementById('versionName').value || '1.0.0';
             }
 
             document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active'));
@@ -726,8 +735,9 @@
 
         function startBuildProcess() {
             const name = document.getElementById('appName').value || 'MyWebApp';
+            const ver = document.getElementById('versionName').value || '1.0.0';
             goToStep(5);
-            document.getElementById('dlFileName').innerText = `${name.replace(/\s+/g, '_')}_release.apk`;
+            document.getElementById('dlFileName').innerText = `${name.replace(/\s+/g, '_')}_v${ver}_release.apk`;
         }
     </script>
 </body>
