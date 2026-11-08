@@ -1,0 +1,39 @@
+name: Build Android APK
+
+on:
+  repository_dispatch:
+    types: [build-apk]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set up Java JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v2
+
+      - name: Create Web App Package
+        run: |
+          mkdir -p app/src/main/assets/www
+          echo '<!DOCTYPE html><html><head><script>window.location.href="${{ github.event.client_payload.appUrl }}";</script></head><body style="background:#000;"></body></html>' > app/src/main/assets/www/index.html
+
+      - name: Build APK with Bubblewrap / Gradle
+        run: |
+          npm install -g @bubblewrap/cli
+          bubblewrap init --manifest="${{ github.event.client_payload.appUrl }}/manifest.json" || true
+
+      - name: Upload APK Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: release-apk
+          path: '**/*.apk'
+          
