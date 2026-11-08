@@ -1,10 +1,15 @@
-import io
-import zipfile
-from flask import Flask, request, jsonify, send_file
+import os
+import requests
+from flask import Flask, request, jsonify
 from flask_cors import CORS
 
 app = Flask(__name__)
 CORS(app)
+
+# Apne GitHub repository ki details yahan set karein
+GITHUB_TOKEN = os.getenv("GITHUB_TOKEN", "YOUR_GITHUB_PERSONAL_ACCESS_TOKEN")
+REPO_OWNER = "Sahusain1"
+REPO_NAME = "apk-generator"
 
 @app.route('/generate-apk', methods=['POST'])
 def generate_apk():
@@ -13,62 +18,32 @@ def generate_apk():
         app_name = data.get('appName', 'MyWebApp')
         app_url = data.get('appUrl', 'https://google.com')
         version_name = data.get('versionName', '1.0.0')
-        pkg_name = data.get('pkgName', 'com.app.webview')
 
-        # File name formatting
-        safe_name = app_name.replace(' ', '_')
-        filename = f"{safe_name}_v{version_name}.apk"
+        # Trigger GitHub Actions Workflow
+        github_url = f"https://api.github.com/repos/{REPO_OWNER}/{REPO_NAME}/dispatches"
+        headers = {
+            "Authorization": f"token {GITHUB_TOKEN}",
+            "Accept": "application/vnd.github.v3+json"
+        }
+        payload = {
+            "event_type": "build-apk",
+            "client_payload": {
+                "appName": app_name,
+                "appUrl": app_url,
+                "versionName": version_name
+            }
+        }
 
-        # Dynamically create Android WebApp config manifest
-        manifest_content = f"""<?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="{pkg_name}"
-    android:versionCode="1"
-    android:versionName="{version_name}">
-    <uses-permission android:name="android.permission.INTERNET" />
-    <application
-        android:label="{app_name}"
-        android:usesCleartextTraffic="true">
-        <activity android:name=".MainActivity" android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-    </application>
-</manifest>"""
+        response = requests.post(github_url, json=payload, headers=headers)
 
-        # HTML container redirect script
-        index_html = f"""<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{app_name}</title>
-    <script>
-        window.location.href = "{app_url}";
-    </script>
-</head>
-<body style="margin:0;padding:0;background:#000;">
-</body>
-</html>"""
-
-        # Memory stream zip creation for APK package binary
-        memory_file = io.BytesIO()
-        with zipfile.ZipFile(memory_file, 'w', zipfile.ZIP_DEFLATED) as zf:
-            zf.writestr('AndroidManifest.xml', manifest_content)
-            zf.writestr('assets/www/index.html', index_html)
-            zf.writestr('META-INF/MANIFEST.MF', 'Manifest-Version: 1.0\nCreated-By: FreeWebToApk\n')
-
-        memory_file.seek(0)
-
-        # Send actual compiled binary file back to browser directly
-        return send_file(
-            memory_file,
-            mimetype='application/vnd.android.package-archive',
-            as_attachment=True,
-            download_name=filename
-        )
+        if response.status_code in [200, 204]:
+            return jsonify({
+                "status": "success",
+                "message": "Real APK Compilation Started on Cloud!",
+                "download_url": f"https://github.com/{REPO_OWNER}/{REPO_NAME}/actions"
+            })
+        else:
+            return jsonify({"status": "error", "message": response.text}), 500
 
     except Exception as e:
         return jsonify({"status": "error", "message": str(e)}), 500
