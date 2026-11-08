@@ -7,7 +7,7 @@ app = Flask(__name__)
 CORS(app)
 
 # Apne GitHub repository ki details yahan set karein
-GITHUB_TOKEN = os.getenv("GITHUB_TOKEN", "YOUR_GITHUB_PERSONAL_ACCESS_TOKEN")
+GITHUB_TOKEN = os.getenv("GITHUB_TOKEN", "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")
 REPO_OWNER = "Sahusain1"
 REPO_NAME = "apk-generator"
 
