@@ -3,141 +3,286 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>APK Generator Cloud</title>
+    <title>FreeWebTo Apk - Professional Cloud Generator</title>
     <style>
-        body {
-            margin: 0;
-            background: #0f172a;
-            color: #f8fafc;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
-        .container {
-            background: #1e293b;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-            width: 100%;
-            max-width: 400px;
-            box-sizing: border-box;
-        }
-        h2 {
-            text-align: center;
-            margin-bottom: 25px;
-            color: #38bdf8;
-        }
-        .form-group {
-            margin-bottom: 20px;
-        }
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            font-size: 14px;
-        }
-        input {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #475569;
-            background: #0f172a;
-            color: #fff;
-            border-radius: 6px;
-            box-sizing: border-box;
-            font-size: 14px;
-        }
-        input:focus {
-            outline: none;
-            border-color: #38bdf8;
-        }
-        button {
-            width: 100%;
-            padding: 12px;
-            background: #38bdf8;
-            color: #0f172a;
-            border: none;
-            font-weight: bold;
-            font-size: 16px;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-        button:hover {
-            background: #0ea5e9;
-        }
-        #status {
-            margin-top: 20px;
-            text-align: center;
-            font-size: 14px;
-            word-break: break-all;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background: #0b0f19; color: #f8fafc; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 15px; }
+        .container { background: #131b2e; border: 1px solid #1e293b; border-radius: 14px; width: 100%; max-width: 480px; padding: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .header { display: flex; align-items: center; margin-bottom: 20px; font-size: 20px; font-weight: bold; color: #fff; }
+        .header span { color: #84cc16; margin-left: 8px; }
+        
+        /* Steps Bar */
+        .steps-bar { display: flex; justify-content: space-between; margin-bottom: 25px; position: relative; }
+        .step-item { display: flex; flex-direction: column; align-items: center; z-index: 2; }
+        .step-circle { width: 32px; height: 32px; border-radius: 50%; background: #1e293b; color: #94a3b8; display: flex; justify-content: center; align-items: center; font-weight: bold; font-size: 14px; border: 2px solid #334155; }
+        .step-item.active .step-circle { background: #84cc16; color: #0b0f19; border-color: #84cc16; box-shadow: 0 0 12px rgba(132, 204, 22, 0.4); }
+        .step-item.completed .step-circle { background: #84cc16; color: #0b0f19; border-color: #84cc16; }
+        .step-label { font-size: 11px; color: #94a3b8; margin-top: 6px; }
+        .step-item.active .step-label { color: #84cc16; font-weight: bold; }
+
+        /* Form Sections */
+        .form-step { display: none; }
+        .form-step.active { display: block; }
+        h3 { font-size: 18px; margin-bottom: 6px; color: #f1f5f9; }
+        p.desc { font-size: 12px; color: #94a3b8; margin-bottom: 20px; }
+        
+        .form-group { margin-bottom: 15px; }
+        label { display: block; font-size: 11px; font-weight: bold; margin-bottom: 6px; color: #cbd5e1; text-transform: uppercase; letter-spacing: 0.5px; }
+        input, select, textarea { width: 100%; padding: 11px 14px; background: #0b0f19; border: 1px solid #334155; color: #fff; border-radius: 8px; font-size: 14px; outline: none; transition: 0.2s; }
+        input:focus, textarea:focus { border-color: #84cc16; box-shadow: 0 0 8px rgba(132, 204, 22, 0.2); }
+        
+        /* Options Grid */
+        .type-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 15px; }
+        .type-btn { background: #0b0f19; border: 1px solid #334155; color: #94a3b8; padding: 10px 5px; border-radius: 8px; font-size: 11px; font-weight: bold; text-align: center; cursor: pointer; transition: 0.2s; }
+        .type-btn.active { background: #84cc16; color: #0b0f19; border-color: #84cc16; }
+
+        .input-section { display: none; }
+        .input-section.active { display: block; }
+
+        .btn-group { display: flex; gap: 10px; margin-top: 25px; }
+        button { flex: 1; padding: 12px; border-radius: 8px; font-weight: bold; font-size: 15px; cursor: pointer; border: none; transition: 0.2s; }
+        .btn-next { background: #84cc16; color: #0b0f19; }
+        .btn-next:hover { background: #65a30d; }
+        .btn-prev { background: #334155; color: #f8fafc; }
+        .btn-prev:hover { background: #475569; }
+        
+        #status { margin-top: 15px; text-align: center; font-size: 13px; word-break: break-all; }
     </style>
 </head>
 <body>
-        <div class="container">
-        <h2>Cloud APK Generator</h2>
+
+<div class="container">
+    <div class="header">
+        🚀 FreeWebTo <span>Apk</span>
+    </div>
+
+    <!-- Steps Indicator Bar -->
+    <div class="steps-bar">
+        <div class="step-item active" id="indicator-1"><div class="step-circle">1</div><div class="step-label">Basic</div></div>
+        <div class="step-item" id="indicator-2"><div class="step-circle">2</div><div class="step-label">Icon</div></div>
+        <div class="step-item" id="indicator-3"><div class="step-circle">3</div><div class="step-label">Settings</div></div>
+        <div class="step-item" id="indicator-4"><div class="step-circle">4</div><div class="step-label">Review</div></div>
+        <div class="step-item" id="indicator-5"><div class="step-circle">5</div><div class="step-label">Download</div></div>
+    </div>
+
+    <!-- STEP 1: Basic Information -->
+    <div class="form-step active" id="step-1">
+        <h3>Basic Information</h3>
+        <p class="desc">Name your app, then choose what it shows: a website, your own HTML, or a ZIP file.</p>
+        
         <div class="form-group">
-            <label>App Name</label>
-            <input type="text" id="appName" placeholder="e.g. My2DGame" value="My2DGame">
+            <label>App Name *</label>
+            <input type="text" id="appName" placeholder="My Awesome App" value="Test" oninput="autoGeneratePackage()">
         </div>
+
         <div class="form-group">
-            <label>Web URL / Game Link</label>
-            <input type="text" id="appUrl" placeholder="https://your-game-url.com" value="https://google.com">
+            <label>What should the app show? *</label>
+            <div class="type-grid">
+                <div class="type-btn active" onclick="switchInputType('url', this)">Website URL</div>
+                <div class="type-btn" onclick="switchInputType('html', this)">Paste HTML</div>
+                <div class="type-btn" onclick="switchInputType('file', this)">HTML File</div>
+                <div class="type-btn" onclick="switchInputType('zip', this)">ZIP File</div>
+            </div>
+        </div>
+
+        <div id="input-url" class="input-section active form-group">
+            <label>Website URL *</label>
+            <input type="text" id="appUrl" placeholder="https://yourwebsite.com" value="https://google.com">
+        </div>
+
+        <div id="input-html" class="input-section form-group">
+            <label>Paste Raw HTML Code *</label>
+            <textarea id="htmlCode" rows="4" placeholder="<html><body><h1>Hello Game</h1></body></html>"></textarea>
+        </div>
+
+        <div id="input-file" class="input-section form-group">
+            <label>Upload HTML File *</label>
+            <input type="file" id="htmlFile" accept=".html">
+        </div>
+
+        <div id="input-zip" class="input-section form-group">
+            <label>Upload Game ZIP File *</label>
+            <input type="file" id="zipFile" accept=".zip">
+        </div>
+
+        <div class="form-group">
+            <label>Package Name</label>
+            <input type="text" id="packageName" placeholder="com.mygame.app" value="com.test.app">
+        </div>
+
+        <div class="btn-group">
+            <button class="btn-next" onclick="nextStep(2)">Next: App Icon ➡️</button>
+        </div>
+    </div>
+        <!-- STEP 2: App Icon -->
+    <div class="form-step" id="step-2">
+        <h3>App Icon & Version</h3>
+        <p class="desc">Provide app icon and configure app version.</p>
+        
+        <div class="form-group">
+            <label>App Icon Image URL</label>
+            <input type="text" id="appIcon" placeholder="https://example.com/icon.png" value="https://cdn-icons-png.flaticon.com/512/3177/3177440.png">
         </div>
         <div class="form-group">
             <label>Version Name</label>
-            <input type="text" id="versionName" placeholder="1.0.0" value="1.0.0">
+            <input type="text" id="versionName" value="1.1">
         </div>
-        <button onclick="generateApk()">Generate APK</button>
-        <div id="status"></div>
+
+        <div class="btn-group">
+            <button class="btn-prev" onclick="prevStep(1)">⬅️ Back</button>
+            <button class="btn-next" onclick="nextStep(3)">Next: Settings ➡️</button>
+        </div>
     </div>
 
-    <script>
-        async function generateApk() {
-            const appName = document.getElementById('appName').value;
-            const appUrl = document.getElementById('appUrl').value;
-            const versionName = document.getElementById('versionName').value;
-            const statusDiv = document.getElementById('status');
+    <!-- STEP 3: Settings & Ad Networks -->
+    <div class="form-step" id="step-3">
+        <h3>Monetization & Settings</h3>
+        <p class="desc">Configure Ad networks (AdMob, Adsterra, Monetag).</p>
+        
+        <div class="form-group">
+            <label>Select Ad Network</label>
+            <select id="adNetwork">
+                <option value="none">None / Off</option>
+                <option value="admob">Google AdMob</option>
+                <option value="adsterra">Adsterra</option>
+                <option value="monetag">Monetag</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Ad Unit ID / Zone ID</label>
+            <input type="text" id="adUnitId" placeholder="ca-app-pub-xxx/yyy or Zone ID">
+        </div>
 
-            if (!appName || !appUrl) {
-                statusDiv.style.color = '#ef4444';
-                statusDiv.innerText = 'Please fill in all fields!';
-                return;
-            }
+        <div class="btn-group">
+            <button class="btn-prev" onclick="prevStep(2)">⬅️ Back</button>
+            <button class="btn-next" onclick="prepareReview(); nextStep(4);">Next: Review ➡️</button>
+        </div>
+    </div>
 
-            statusDiv.style.color = '#f59e0b';
-            statusDiv.innerText = 'Triggering cloud compilation... Please wait.';
+    <!-- STEP 4: Review Information -->
+    <div class="form-step" id="step-4">
+        <h3>Review Information</h3>
+        <p class="desc">Verify configuration before building APK.</p>
+        
+        <div style="background: #0b0f19; padding: 12px; border-radius: 8px; font-size: 13px; line-height: 1.6; border: 1px solid #334155;">
+            <div><b>App Name:</b> <span id="revName" style="color: #84cc16;">-</span></div>
+            <div><b>Input Type:</b> <span id="revType" style="color: #38bdf8;">-</span></div>
+            <div><b>Package:</b> <span id="revPkg">-</span></div>
+            <div><b>Ad Network:</b> <span id="revAds" style="color: #f59e0b;">-</span></div>
+        </div>
 
-            try {
-                // Seedha Render backend URL use kiya gaya hai taaki Vercel timeout error na aaye
-                const response = await fetch('https://apk-generator-0bbp.onrender.com/generate-apk', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        appName: appName,
-                        appUrl: appUrl,
-                        versionName: versionName
-                    })
-                });
+        <div class="btn-group">
+            <button class="btn-prev" onclick="prevStep(3)">⬅️ Back</button>
+            <button class="btn-next" onclick="generateApk(); nextStep(5);" style="background: #84cc16; color: #0b0f19;">🚀 Build APK Now</button>
+        </div>
+    </div>
 
-                const data = await response.json();
+    <!-- STEP 5: Download & GitHub Actions Status -->
+    <div class="form-step" id="step-5">
+        <h3>Cloud Compilation</h3>
+        <p class="desc">Build request dispatched successfully.</p>
+        
+        <div id="status">Connecting to Render backend...</div>
 
-                if (response.ok) {
-                    statusDiv.style.color = '#22c55e';
-                    statusDiv.innerHTML = `Success! Build started on GitHub.<br><a href="https://github.com/Sahusain1/apk-generator/actions" target="_blank" style="color: #38bdf8;">Click here to check build & download APK</a>`;
-                } else {
-                    statusDiv.style.color = '#ef4444';
-                    statusDiv.innerText = 'Error: ' + (data.message || 'Something went wrong');
-                }
-            } catch (error) {
-                statusDiv.style.color = '#ef4444';
-                statusDiv.innerText = 'Network Error: ' + error.message;
-            }
+        <div class="btn-group">
+            <button class="btn-prev" onclick="prevStep(4)">⬅️ Modify</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    let currentStep = 1;
+    let selectedInputType = 'url';
+
+    function autoGeneratePackage() {
+        const appNameVal = document.getElementById('appName').value.trim().toLowerCase().replace(/[^a-z0-9]/g, '');
+        if (appNameVal) {
+            document.getElementById('packageName').value = `com.${appNameVal}.app`;
         }
-    </script>
+    }
+
+    function switchInputType(type, el) {
+        selectedInputType = type;
+        document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active'));
+        el.classList.add('active');
+
+        document.querySelectorAll('.input-section').forEach(s => s.classList.remove('active'));
+        document.getElementById(`input-${type}`).classList.add('active');
+    }
+
+    function nextStep(step) {
+        document.getElementById(`step-${currentStep}`).classList.remove('active');
+        document.getElementById(`indicator-${currentStep}`).classList.remove('active');
+        document.getElementById(`indicator-${currentStep}`).classList.add('completed');
+        
+        currentStep = step;
+        document.getElementById(`step-${currentStep}`).classList.add('active');
+        document.getElementById(`indicator-${currentStep}`).classList.add('active');
+    }
+
+    function prevStep(step) {
+        document.getElementById(`step-${currentStep}`).classList.remove('active');
+        document.getElementById(`indicator-${currentStep}`).classList.remove('active');
+        
+        currentStep = step;
+        document.getElementById(`step-${currentStep}`).classList.add('active');
+        document.getElementById(`indicator-${currentStep}`).classList.add('active');
+        document.getElementById(`indicator-${currentStep}`).classList.remove('completed');
+    }
+
+    function prepareReview() {
+        document.getElementById('revName').innerText = document.getElementById('appName').value;
+        document.getElementById('revType').innerText = selectedInputType.toUpperCase();
+        document.getElementById('revPkg').innerText = document.getElementById('packageName').value;
+        document.getElementById('revAds').innerText = document.getElementById('adNetwork').value.toUpperCase();
+    }
+
+    async function generateApk() {
+        const appName = document.getElementById('appName').value.trim();
+        const packageName = document.getElementById('packageName').value.trim();
+        const versionName = document.getElementById('versionName').value.trim() || '1.1';
+        const adNetwork = document.getElementById('adNetwork').value;
+        const adUnitId = document.getElementById('adUnitId').value.trim();
+        const statusDiv = document.getElementById('status');
+
+        let appUrl = document.getElementById('appUrl').value.trim();
+        if (selectedInputType === 'html') {
+            appUrl = document.getElementById('htmlCode').value;
+        }
+
+        statusDiv.style.color = '#f59e0b';
+        statusDiv.innerText = 'Triggering Render backend & GitHub Actions...';
+
+        try {
+            const response = await fetch('https://apk-generator-0bbp.onrender.com/generate-apk', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    appName: appName,
+                    appUrl: appUrl,
+                    inputType: selectedInputType,
+                    packageName: packageName || 'com.myapp.game',
+                    versionName: versionName,
+                    adNetwork: adNetwork,
+                    adUnitId: adUnitId
+                })
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                statusDiv.style.color = '#84cc16';
+                statusDiv.innerHTML = `✅ Build Started Successfully!<br><br><a href="https://github.com/Sahusain1/apk-generator/actions" target="_blank" style="color: #84cc16; font-weight: bold; text-decoration: underline;">Click here to monitor GitHub Actions & Download APK</a>`;
+            } else {
+                statusDiv.style.color = '#ef4444';
+                statusDiv.innerText = 'Error: ' + (data.message || 'Something went wrong');
+            }
+        } catch (error) {
+            statusDiv.style.color = '#ef4444';
+            statusDiv.innerText = 'Network Error: ' + error.message;
+        }
+    }
+</script>
+
 </body>
 </html>
